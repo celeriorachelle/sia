@@ -1,0 +1,39 @@
+<form action="/records" method="get">
+    <input type="text" name="name" placeholder="Search by Name">
+    <input type="date" name="startDate" placeholder="Start Date">
+    <input type="date" name="endDate" placeholder="End Date">
+    <input type="number" name="minScore" placeholder="Min Score">
+    <input type="number" name="maxScore" placeholder="Max Score">
+    
+    <!-- Add a dropdown for selecting the type -->
+    <select name="type" id="type">
+        <option value="">Select Type</option>
+        <option value="student">Student</option>
+        <option value="teacher">Teacher</option>
+        <option value="admin">Admin</option>
+    </select>
+    
+    <button type="submit">Search</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Score</th>
+            <th>Date</th>
+            <th>Type</th> <!-- Add Type column -->
+        </tr>
+    </thead>
+    <tbody>
+        <% records.forEach(record => { %>
+        <tr>
+            <td><%= record.name %></td>
+            <td><%= record.score %></td>
+            <td><%= new Date(record.date).toLocaleDateString() %></td>
+            <td><%= record.type %></td> <!-- Display Type -->
+        </tr>
+        <% }); %>
+    </tbody>
+</table>
+</form>

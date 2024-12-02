@@ -1,0 +1,141 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Bebas Neue', sans-serif;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.41),rgba(0, 0, 0, 0.312)),url('/images/quiz.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+.navContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+    width: 100%;
+    margin-top: 20px;
+    
+}
+
+.logo {
+    width: 100px;
+    height: auto;
+    margin-left: 10px;
+    margin-right: 880px;
+}
+
+.navContainer ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    margin-right: 25px;
+   
+}
+
+.navContainer ul li {
+    margin-left: 30px;
+}
+
+.navContainer ul li a {
+    text-decoration: none;
+    letter-spacing: 2px;
+    color: white;
+    padding: 10px;
+    transition: background-color 0.5s ease-out 100ms
+}
+
+.navContainer ul li a:hover {
+    background-color: white;
+    color: #b81515;
+    border-radius: 5px;
+}
+
+.difficulty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 80px;
+    
+}
+
+.difficulty label {
+    margin-bottom: 20px;
+    color: white;
+    letter-spacing: 2px;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.buttonList {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 30px;
+
+}
+
+.buttonList li {
+    margin: 10px 0;
+}
+
+.buttonList button {
+    background-color: #d32f2f;
+    color: white;
+    padding: 10px 30px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 200px;
+    border: none;
+    transition: background-color 0.5s ease-out 100ms
+ 
+    
+}
+
+.buttonList button:hover {
+    background-color: #ac1414;
+    color: white;
+    border-radius: 5px;
+
+}
+
+.buttonList button:focus {
+    background-color: #580909;
+}
+
+input[type="number"] {
+    padding: 5px;
+    font-size: 13px;
+    width: 60px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Start quiz button */
+#submitButton {
+    background-color: #d32f2f;
+    color: white;
+    padding: 10px 40px;
+    font-size: 20px;
+    border: none;
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-top: 40px;
+    display: block;
+    align-self: center;
+    border-radius: 5px;
+    transition: all .2s ease-in-out;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+#submitButton:hover {
+    background-color: #b71c1c;
+    transform: scale(1.25);
+}

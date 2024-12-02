@@ -1,0 +1,136 @@
+body {
+    font-family: 'Bebas Neue', sans-serif;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.41),rgba(0, 0, 0, 0.312)),url('/images/minions.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    height: 100vh;
+    }
+    
+    
+    .header {
+        display: flex;
+    }
+    
+    .header ul {
+        display:flex;
+        list-style-type: none;
+        margin-top: 20px;
+    }
+    
+    .header ul li{
+        margin-left: 30px;
+    }
+    .header ul li a {
+        text-decoration: none;
+        letter-spacing: 2px;
+        color: white;
+        padding: 10px;
+        transition: background-color 0.5s ease-out 100ms
+        
+    }
+    
+    .header ul li a:hover {
+        background-color: white;
+        color: #d32f2f;
+        border-radius: 5px;
+    }
+    
+    .logo {
+        width: 100px;
+        height: 25px;
+        margin-left: 10px;
+        margin-right: 865px;
+        margin-top: 20px;
+    }
+    
+    .container h3{
+        font-family: 'Bebas Neue', sans-serif;
+        letter-spacing: 2px;
+        font-weight: 500;
+    }
+    .about-us {
+        background-color: rgba(81, 85, 20, 0.368);  
+        margin: 20px auto;
+        max-width: 800px;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        color:white;
+        font-family: 'Sharp Sans', sans-serif;
+
+    }
+    
+    .profile-container {
+        display: flex;
+        justify-content: center; 
+        align-items: flex-start; 
+        flex-wrap: wrap; 
+        margin-top: 20px;
+    }
+    .profile-container h3{
+        font-family: 'Bebas Neue', sans-serif;
+        letter-spacing: 2px;
+        font-weight: 100;
+
+    }
+    
+    .profile-container ul li {
+        list-style-type: none;
+        position: relative;
+        
+    }
+    
+    .profile-box img {
+        width: 100px;
+        height: 90px;
+        padding: 2px;
+        background-color: rgba(255, 255, 255, 0.94);
+        border-radius: 5%;
+        margin-bottom: 15px;
+    }
+    .profile-box {
+        background-color: rgba(81, 85, 20, 0.368);  
+        width: 200px;
+        height: 200px; 
+        margin: 10px; 
+        padding: 20px;
+        text-align: center;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.5s ease;
+        color: white;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .hidden-text {
+        opacity: 0; 
+        visibility: hidden;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+        width: 90%;
+        text-align: center;
+        font-family: 'Sharp Sans', sans-serif;
+        color: white;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+
+
+    .profile-box:hover {
+        width: 400px;
+        height: 500px;
+    }
+
+    .profile-box:not(:hover) {
+    width: 200px;
+    height: 200px;
+    transition: width 0.5s ease, height 0.5s ease;
+}
+
+    .profile-box:hover .hidden-text {
+        opacity: 1;
+        visibility: visible;
+
+    }

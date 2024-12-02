@@ -1,0 +1,45 @@
+body {
+    font-family: 'Bebas Neue', sans-serif;
+    background-color: #ffff;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    height: 100vh;
+    }
+    
+    
+    .header {
+        display: flex;
+    }
+    
+    .header ul {
+        display:flex;
+        list-style-type: none;
+        margin-top: 20px;
+    }
+    
+    .header ul li{
+        margin-left: 30px;
+    }
+    .header ul li a {
+        text-decoration: none;
+        letter-spacing: 2px;
+        color: white;
+        padding: 10px;
+        transition: background-color 0.5s ease-out 100ms
+        
+    }
+    
+    .header ul li a:hover {
+        background-color: white;
+        color: #d32f2f;
+        border-radius: 5px;
+    }
+    
+    .logo {
+        width: 100px;
+        height: 25px;
+        margin-left: 10px;
+        margin-right: 865px;
+        margin-top: 20px;
+    }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="/stylesheets/quizRegister.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/sharp-sans" rel="stylesheet">
+</head>
+<body>
+    <div class="navContainer">
+        <img src="/images/logo.png" class="logo">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/aboutus">About us</a></li>
+            <li><a href="/Trendings">Trending</a></li>
+        </ul>
+    </div>
+    <div class="formContainer">
+        <form id="quizForm" action="/quizRegister" method="POST">
+            <!-- Registration fields -->
+            <input type="text" name="name" id="name" placeholder="Your Name" required />
+            <input type="date" name="date" id="date" required />
+            <label for="type">Select Type:</label>
+            <select name="type" id="type">
+                <option value="student" selected>Student</option>
+                <option value="teacher">Teacher</option>
+                <option value="admin">Admin</option>
+            </select>
+            <button type="submit" id="submitButton">Submit</button>
+        </form>        
+    </div>
+</body>
+</html>

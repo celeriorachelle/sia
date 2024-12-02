@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Lobby</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="/stylesheets/quiz.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="navContainer">
+        <img src="images/logo.png" class="logo">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/aboutus">About us</a></li>
+            <li><a href="/Trendings">Trending</a></li>
+        </ul>
+    </div>
+    <div class="difficulty">
+        <label for="difficultyLabel" id="difficultyLabel">Difficulty: Easy</label>
+        <ul class="buttonList">
+            <li><button type="button" id="easyButton">Easy</button></li>
+            <li><button type="button" id="mediumButton">Medium</button></li>
+            <li><button type="button" id="hardButton">Hard</button></li>
+        </ul>
+        <label for="amount">Number of Questions:</label>
+        <input type="number" id="amount" name="amount" min="1" max="50" required>
+        <div id="errorContainer" style="color: rgba(255, 0, 0, 0); margin-top: 5px;"></div>
+    </div>
+    <button type="button" id="submitButton">Start Quiz</button>
+
+    <script>
+        var selectedDifficulty = 'easy'
+
+        document.getElementById('easyButton').addEventListener('click', function() {
+            selectedDifficulty = 'easy';
+            document.getElementById('difficultyLabel').innerText = 'Difficulty: Easy';
+        });
+
+        document.getElementById('mediumButton').addEventListener('click', function() {
+            selectedDifficulty = 'medium';
+            document.getElementById('difficultyLabel').innerText = 'Difficulty: Medium';
+        });
+
+        document.getElementById('hardButton').addEventListener('click', function() {
+            selectedDifficulty = 'hard';
+            document.getElementById('difficultyLabel').innerText = 'Difficulty: Hard';
+        });
+
+        document.getElementById('submitButton').addEventListener('click', function() {
+            var amount = document.getElementById('amount').value;
+
+            errorContainer.innerHTML = ''; 
+
+            if (!amount || amount < 1 || amount > 50) {
+                const errorlabel = document.createElement('label');
+                errorlabel.innerText = 'Please enter a valid number of questions between 1 and 50.';
+                errorContainer.appendChild(errorlabel);
+                document.getElementById('amount').focus();
+                return;
+            }
+
+            window.location.href = '/quiz/start?difficulty=' + selectedDifficulty + '&amount=' + amount;
+        });
+    </script>
+</body>
+</html>
+

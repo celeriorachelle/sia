@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Start</title>
+    <link rel="stylesheet" href="/stylesheets/quiz_start.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="navContainer">
+        <img src="/images/logo.png" class="logo">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/quiz">Quiz</a></li>
+            <li><a href="/aboutus">About us</a></li>
+            <li><a href="/Trendings">Trending</a></li>
+        </ul>
+    </div>
+
+    <!-- Hidden data storing the questions -->
+    <input type="hidden" id="questionsData" value='<%= JSON.stringify(questions) %>' />
+
+    <h1>Quiz Questions</h1>
+
+    <!-- Start of the form -->
+    <form action="/quiz/submit" method="POST">
+        <% if (questions && questions.length > 0) { %>
+            <% for (var i = 0; i < questions.length; i++) { %>
+                <div class="questionContainer">
+                    <p>Question <%= i + 1 %>: <%= questions[i].question %></p>
+                    <p id="correctAns">Correct Answer: <%= questions[i].correct_answer %></p>
+                    <% 
+                    var answers = questions[i].incorrect_answers.concat(questions[i].correct_answer);
+                    answers = answers.sort(() => Math.random() - 0.5);
+                    for (var j = 0; j < answers.length; j++) { 
+                    %>
+                        <label id="choice">
+                            <input type="radio" id="answer<%= i %><%= j %>" name="answers[<%= i %>]" value="<%= answers[j] %>">
+                            <label for="answer<%= i %><%= j %>"><%= answers[j] %></label>
+                        </label>
+                    <% } %>
+                </div>
+            <% } %>
+        <% } else { %>
+            <p>No questions found. Please try again later.</p>
+        <% } %>
+
+        <!-- Hidden user data -->
+        <input type="hidden" name="name" value="<%= name %>" />
+
+        <!-- Button to submit the form -->
+        <div class="buttonSubmit">
+            <button type="submit" id="btnSubmit">Submit</button>
+        </div>
+    </form>
+    <script src="/javascripts/script_quiz.js"></script>
+</body>
+</html>
