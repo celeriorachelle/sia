@@ -11,9 +11,11 @@
     "debug": "~2.6.9",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
+    "express-session": "^1.18.1",
     "he": "^1.2.0",
     "html-entities": "^2.5.2",
     "http-errors": "~1.6.3",
+    "install": "^0.13.0",
     "mongodb": "^6.11.0",
     "mongoose": "^8.8.3",
     "morgan": "~1.9.1"

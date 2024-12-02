@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const createError = require('http-errors');
 const mongoose = require('mongoose');
+const session = require('express-session');
 const app = express();
 
 const indexRouter = require('./routes/index');
@@ -23,6 +24,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true,
+}));
 
 // Example middleware for testing
 const myMiddleware = (req, res, next) => {
@@ -31,6 +37,8 @@ const myMiddleware = (req, res, next) => {
 };
 app.use(myMiddleware);
 
+
+// Connect to your MongoDB database
 mongoose.connect('mongodb+srv://express_user:express123@cluster0.rixeg.mongodb.net/myDatabase?retryWrites=true&w=majority&appName=Cluster0', {})
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('Error connecting to MongoDB:', err));

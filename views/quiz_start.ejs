@@ -16,13 +16,12 @@
         </ul>
     </div>
 
-    <!-- Hidden data storing the questions -->
+    <input type="hidden" id="sessionData" value='<%= JSON.stringify({ name: name, startDate: startDate, type: type }) %>' />
     <input type="hidden" id="questionsData" value='<%= JSON.stringify(questions) %>' />
 
     <h1>Quiz Questions</h1>
 
-    <!-- Start of the form -->
-    <form action="/quiz/submit" method="POST">
+    <div id="quizForm">
         <% if (questions && questions.length > 0) { %>
             <% for (var i = 0; i < questions.length; i++) { %>
                 <div class="questionContainer">
@@ -33,25 +32,84 @@
                     answers = answers.sort(() => Math.random() - 0.5);
                     for (var j = 0; j < answers.length; j++) { 
                     %>
-                        <label id="choice">
+                        <div class="choice">
                             <input type="radio" id="answer<%= i %><%= j %>" name="answers[<%= i %>]" value="<%= answers[j] %>">
                             <label for="answer<%= i %><%= j %>"><%= answers[j] %></label>
-                        </label>
+                        </div>
                     <% } %>
-                </div>
+                </div>                
             <% } %>
         <% } else { %>
             <p>No questions found. Please try again later.</p>
         <% } %>
+    </div>
 
-        <!-- Hidden user data -->
-        <input type="hidden" name="name" value="<%= name %>" />
+    <div class="buttonSubmit">
+        <button type="button" id="btnSubmit">Submit</button>
+    </div>
 
-        <!-- Button to submit the form -->
-        <div class="buttonSubmit">
-            <button type="submit" id="btnSubmit">Submit</button>
-        </div>
-    </form>
-    <script src="/javascripts/script_quiz.js"></script>
+    <script>
+        document.getElementById('btnSubmit').addEventListener('click', async function () {
+            const sessionDataElement = document.getElementById('sessionData');
+            const questionsDataElement = document.getElementById('questionsData');
+
+            // Error handling: Check if elements are found
+            if (!sessionDataElement || !questionsDataElement) {
+                console.error('Missing session or questions data');
+                alert('An error occurred. Please try again.');
+                return;
+            }
+
+            const sessionData = JSON.parse(sessionDataElement.value);  // Access session data
+            const questionsData = JSON.parse(questionsDataElement.value);
+            const userAnswers = {};
+
+            let allAnswered = true;
+
+            // Validate and collect answers
+            questionsData.forEach((_, index) => {
+                const options = document.getElementsByName(`answers[${index}]`);
+                const selectedOption = [...options].find((option) => option.checked);
+
+                if (selectedOption) {
+                    userAnswers[index] = selectedOption.value;
+                } else {
+                    allAnswered = false;
+                }
+            });
+
+            if (!allAnswered) {
+                alert('Please answer all questions before submitting.');
+                return;
+            }
+
+            // Send data via fetch
+            try {
+                const response = await fetch('/quiz/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: sessionData.name,
+                        startDate: sessionData.startDate,
+                        type: sessionData.type,
+                        answers: userAnswers,
+                    }),
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json();
+                    window.location.href = `/quiz/records?name=${encodeURIComponent(sessionData.name)}&score=${responseData.score}`;
+                } else {
+                    console.error('Error submitting quiz:', response.statusText);
+                    alert('Failed to submit quiz. Please try again later.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while submitting the quiz.');
+            }
+        });
+    </script>
 </body>
 </html>

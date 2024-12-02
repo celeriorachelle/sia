@@ -1,99 +1,53 @@
-// document.addEventListener('DOMContentLoaded', function() {
-//     const questionsData = document.getElementById('questionsData').value;
-//     const questions = JSON.parse(questionsData);
-//     const quizForm = document.getElementById('quizForm');
-//     const scoreContainer = document.getElementById('scoreContainer');
-//     const retryButton = document.createElement('button'); 
-//     retryButton.id = 'retryButton';
+// document.getElementById('btnSubmit').addEventListener('click', async function () {
+//     const sessionData = JSON.parse(document.getElementById('sessionData').value);  // Access session data
 
-//     quizForm.addEventListener('submit', function(event) {
-//         event.preventDefault();
+//     // Collect user answers and submit them
+//     const questionsData = JSON.parse(document.getElementById('questionsData').value);
+//     const userAnswers = {};
 
-//         if (event.submitter && event.submitter.innerText === 'Retry Quiz') {
-//             window.location.href = '/quiz'; 
-//             return;
+//     let allAnswered = true;
+
+//     // Validate and collect answers
+//     questionsData.forEach((_, index) => {
+//         const options = document.getElementsByName(`answers[${index}]`);
+//         const selectedOption = [...options].find((option) => option.checked);
+
+//         if (selectedOption) {
+//             userAnswers[index] = selectedOption.value;
+//         } else {
+//             allAnswered = false;
 //         }
-
-//         let answers = {};
-//         let formData = new FormData(quizForm);
-
-//         for (let entry of formData.entries()) {
-//             answers[entry[0]] = entry[1];
-//         }
-
-//         let allQuestionsAnswered = true;
-//         for (let i = 0; i < questions.length; i++) {
-//             if (!answers['question' + i]) {
-//                 allQuestionsAnswered = false;
-//                 break;
-//             }
-//         }
-
-//         const existingAlert = document.getElementById('incompleteAlert');
-//         if (!allQuestionsAnswered) {
-//             if (!existingAlert) {
-//                 const incompleteDiv = document.createElement('div');
-//                 incompleteDiv.innerText = 'Please answer all the questions';
-//                 incompleteDiv.style.marginBottom = '10px';
-//                 incompleteDiv.id = 'alertDiv';
-
-//                 const okayButton = document.createElement('button');
-//                 okayButton.innerText = 'Okay';
-//                 okayButton.id = 'okayButton';
-
-//                 okayButton.addEventListener('click', function() {
-//                     incompleteDiv.remove();
-//                     okayButton.remove();
-//                 });
-
-//                 quizForm.appendChild(incompleteDiv);
-//                 incompleteDiv.appendChild(okayButton);
-
-//                 requestAnimationFrame(() => {
-//                     incompleteDiv.style.transform = 'translate(-50%, -50%) scale(1)'; 
-//                     incompleteDiv.style.opacity = '1'; 
-//                 });
-//             }
-//             return;
-//         }
-
-//         let score = 0;
-//         scoreContainer.innerHTML = '';
-//         questions.forEach((question, index) => {
-//             if (answers['question' + index] === question.correct_answer) {
-//                 score++;
-//             }
-
-//             const correctAnswer = document.getElementById('correctAns');
-//             correctAnswer.id = 'visibleAns';
-//         });
-
-//         const scoreDiv = document.createElement('div');
-//         scoreDiv.id = 'scoreDiv';
-//         scoreDiv.innerText = `You scored ${score} out of ${questions.length}`;
-//         scoreContainer.appendChild(scoreDiv);
-
-//         window.scrollTo({ top: 0, behavior: 'smooth' });
-
-//         retryButton.innerText = 'Retry Quiz';
-//         retryButton.addEventListener('click', function() {
-//             window.location.href = '/quiz';
-//         });
-
-//         scoreContainer.appendChild(retryButton);
-
-//         const submitButton = document.getElementById('btnSubmit');
-//         submitButton.disabled = true;
-//         submitButton.style.display = 'none';
-
-//         // Redirect logic for submitting quiz results
-//         const name = document.getElementById('name').value;
-//         const scoreInput = document.getElementById('score');
-//         scoreInput.value = score;  // Set the score value to be sent with the form
-
-//         // Perform the submit via fetch or redirect
-//         setTimeout(function() {
-//             window.location.href = `/quiz/records?name=${name}&score=${score}`;
-//         }, 2000);  // Delay the redirect to allow time for score display
 //     });
+
+//     if (!allAnswered) {
+//         alert('Please answer all questions before submitting.');
+//         return;
+//     }
+
+//     // Send data via fetch
+//     try {
+//         const response = await fetch('/quiz/submit', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({
+//                 name: sessionData.name,
+//                 startDate: sessionData.startDate,
+//                 type: sessionData.type,
+//                 answers: userAnswers,
+//             }),
+//         });
+
+//         if (response.ok) {
+//             const responseData = await response.json();
+//             window.location.href = `/quiz/records?name=${encodeURIComponent(sessionData.name)}&score=${responseData.score}`;
+//         } else {
+//             console.error('Error submitting quiz:', response.statusText);
+//             alert('Failed to submit quiz. Please try again later.');
+//         }
+//     } catch (error) {
+//         console.error('Error:', error);
+//         alert('An error occurred while submitting the quiz.');
+//     }
 // });

@@ -1,16 +1,13 @@
-<form action="/records" method="get">
-    <input type="text" name="name" placeholder="Search by Name">
-    <input type="date" name="startDate" placeholder="Start Date">
-    <input type="date" name="endDate" placeholder="End Date">
-    <input type="number" name="minScore" placeholder="Min Score">
-    <input type="number" name="maxScore" placeholder="Max Score">
+<form action="/quizRecords" method="get">
+    <input type="text" name="name" placeholder="Search by Name" value="<%= name || '' %>">
+    <input type="date" name="startDate" placeholder="Start Date" value="<%= startDate || '' %>">
     
     <!-- Add a dropdown for selecting the type -->
     <select name="type" id="type">
         <option value="">Select Type</option>
-        <option value="student">Student</option>
-        <option value="teacher">Teacher</option>
-        <option value="admin">Admin</option>
+        <option value="student" <%= type === 'student' ? 'selected' : '' %>>Student</option>
+        <option value="teacher" <%= type === 'teacher' ? 'selected' : '' %>>Teacher</option>
+        <option value="admin" <%= type === 'admin' ? 'selected' : '' %>>Admin</option>
     </select>
     
     <button type="submit">Search</button>
@@ -36,4 +33,3 @@
         <% }); %>
     </tbody>
 </table>
-</form>

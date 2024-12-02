@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();  // Make sure you are using express.Router() properly
+var router = express.Router();
 const axios = require('axios');
 const QuizRecord = require('../models/user'); // Import your QuizRecord model
 
@@ -18,7 +18,9 @@ function decodeHtmlEntities(text) {
 
 // Example routes for quiz functionality
 router.get('/start', async function (req, res, next) {
-  const { name } = req.query;
+  const { name, startDate, type } = req.session;
+  console.log('Session Data:', req.session);
+
   var difficulty = req.query.difficulty || 'easy';
   var amount = req.query.amount || 10;
 
@@ -35,55 +37,68 @@ router.get('/start', async function (req, res, next) {
               incorrect_answers: question.incorrect_answers.map(decodeHtmlEntities),
           };
       });
+      req.session.correctAnswers = decodedQuestions.map((q) => q.correct_answer);
 
-      res.render('quiz_start', { questions: decodedQuestions, name });
+      // Pass session data directly to EJS
+      res.render('quiz_start', { 
+          questions: decodedQuestions, 
+          name: name, 
+          startDate: startDate, 
+          type: type 
+      });
   } catch (error) {
       console.error('Error fetching quiz questions:', error);
       res.status(500).send('An error occurred while fetching quiz questions.');
   }
 });
 
+// POST route to handle quiz submission
+router.post('/submit', async (req, res) => {
+  const { name, startDate, type, answers } = req.body;  // Destructure answers from req.body
 
-//POST endpoint for submitting quiz results
-router.post('/submit', async function (req, res) {
+  if (!name || !answers) {
+      return res.status(400).json({ error: 'Name and answers are required' });
+  }
+
   try {
-    const { name, answers } = req.body;
+      // Calculate the score based on answers
+      const correctAnswers = req.session.correctAnswers || [];
+      let calculatedScore = 0;
 
-    // Validate if answers are submitted
-    if (!answers) {
-      return res.status(400).send('Please complete the quiz before submitting.');
-    }
+      Object.keys(answers).forEach((key) => {
+          if (answers[key] === correctAnswers[key]) {
+              calculatedScore++;
+          }
+      });
 
-    // Calculate the score
-    let score = 0;
+      // Create a new quiz record
+      const newQuizRecord = new QuizRecord({
+          name,
+          type,
+          score: calculatedScore, // Set the calculated score
+          date: new Date() // Set the current date as the quiz submission date
+      });
 
-    // Assume that correct answers are stored in the `correctAnswers` array from the API response
-    const correctAnswers = req.session.correctAnswers || [];  // Store correct answers temporarily (maybe in session)
+      // Save the record to the database
+      await newQuizRecord.save();
 
-    Object.keys(answers).forEach((index) => {
-      if (answers[index] === correctAnswers[index]) {
-        score++;
-      }
-    });
+      // Respond with the calculated score
+      res.json({ score: calculatedScore });
 
-    // Save the result to the database
-    const newRecord = new QuizRecord({ name, score, date: new Date() });
-    await newRecord.save();
-
-    res.redirect(`/quiz/records?name=${encodeURIComponent(name)}&score=${score}`);
   } catch (error) {
-    console.error('Error calculating quiz score:', error);
-    res.status(500).send('An error occurred while calculating the quiz score.');
+      console.error('Error saving quiz record:', error);
+      res.status(500).json({ error: 'An error occurred while saving the quiz record' });
   }
 });
 
+module.exports = router;
 
 // Endpoint to view quiz records
 router.get('/records', async function (req, res) {
   try {
-    const { name, score } = req.query;
+    const { name, score, startDate, type } = req.query;
     const records = await QuizRecord.find({ name: new RegExp(name, 'i') }).sort({ date: -1 });
-    res.render('quizRecords', { title: 'Quiz Records', records, name, score });
+    res.render('quizRecords', { title: 'Quiz Records', records, name, score, startDate, type });
   } catch (error) {
     console.error('Error fetching quiz records:', error);
     res.status(500).send('An error occurred while fetching quiz records.');
