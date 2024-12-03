@@ -21,6 +21,9 @@
 
     <h1>Quiz Questions</h1>
 
+    <!-- Display the selected difficulty -->
+    <p id="difficultyLabel">Difficulty: <%= difficulty.charAt(0).toUpperCase() + difficulty.slice(1) %></p>
+
     <div id="quizForm">
         <% if (questions && questions.length > 0) { %>
             <% for (var i = 0; i < questions.length; i++) { %>
@@ -49,67 +52,62 @@
     </div>
 
     <script>
-        document.getElementById('btnSubmit').addEventListener('click', async function () {
-            const sessionDataElement = document.getElementById('sessionData');
-            const questionsDataElement = document.getElementById('questionsData');
+document.getElementById('btnSubmit').addEventListener('click', async function () {
+    const sessionData = JSON.parse(document.getElementById('sessionData').value);
+    const questionsData = JSON.parse(document.getElementById('questionsData').value);
+    const userAnswers = {};
 
-            // Error handling: Check if elements are found
-            if (!sessionDataElement || !questionsDataElement) {
-                console.error('Missing session or questions data');
-                alert('An error occurred. Please try again.');
-                return;
-            }
+    let allAnswered = true;
 
-            const sessionData = JSON.parse(sessionDataElement.value);  // Access session data
-            const questionsData = JSON.parse(questionsDataElement.value);
-            const userAnswers = {};
+    // Validate and collect answers
+    questionsData.forEach((_, index) => {
+        const options = document.getElementsByName(`answers[${index}]`);
+        const selectedOption = [...options].find((option) => option.checked);
 
-            let allAnswered = true;
+        if (selectedOption) {
+            userAnswers[index] = selectedOption.value;
+        } else {
+            allAnswered = false;
+        }
+    });
 
-            // Validate and collect answers
-            questionsData.forEach((_, index) => {
-                const options = document.getElementsByName(`answers[${index}]`);
-                const selectedOption = [...options].find((option) => option.checked);
+    if (!allAnswered) {
+        alert('Please answer all questions before submitting.');
+        return;
+    }
 
-                if (selectedOption) {
-                    userAnswers[index] = selectedOption.value;
-                } else {
-                    allAnswered = false;
-                }
-            });
+    // Now that we have the difficultyLabel element, let's fetch the difficulty
+    const selectedDifficulty = document.getElementById('difficultyLabel').innerText.split(": ")[1].toLowerCase();
 
-            if (!allAnswered) {
-                alert('Please answer all questions before submitting.');
-                return;
-            }
-
-            // Send data via fetch
-            try {
-                const response = await fetch('/quiz/submit', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name: sessionData.name,
-                        startDate: sessionData.startDate,
-                        type: sessionData.type,
-                        answers: userAnswers,
-                    }),
-                });
-
-                if (response.ok) {
-                    const responseData = await response.json();
-                    window.location.href = `/quiz/records?name=${encodeURIComponent(sessionData.name)}&score=${responseData.score}`;
-                } else {
-                    console.error('Error submitting quiz:', response.statusText);
-                    alert('Failed to submit quiz. Please try again later.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while submitting the quiz.');
-            }
+    // Send data via fetch
+    try {
+        const response = await fetch('/quiz/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: sessionData.name,
+                startDate: sessionData.startDate,
+                type: sessionData.type,
+                answers: userAnswers,
+                difficulty: selectedDifficulty // Add difficulty to the request body
+            }),
         });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            // Redirect to the provided URL
+            window.location.href = responseData.redirectUrl;
+        } else {
+            console.error('Error submitting quiz:', response.statusText);
+            alert('Failed to submit quiz. Please try again later.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while submitting the quiz.');
+    }
+});
     </script>
 </body>
 </html>

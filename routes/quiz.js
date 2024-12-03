@@ -1,109 +1,147 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const axios = require('axios');
-const QuizRecord = require('../models/user'); // Import your QuizRecord model
+const User = require('../models/user'); // Import your User model
 
+// Decode HTML entities in quiz questions and answers
 function decodeHtmlEntities(text) {
-  const entities = {
-    '&amp;': '&',
-    '&quot;': '"',
-    '&#039;': "'",
-    '&lt;': '<',
-    '&gt;': '>',
-    '&nbsp;': ' ',
-  };
-
-  return text.replace(/&[a-zA-Z0-9#]+;/g, (entity) => entities[entity] || entity);
+    const entities = {
+        '&amp;': '&',
+        '&quot;': '"',
+        '&#039;': "'",
+        '&lt;': '<',
+        '&gt;': '>',
+        '&nbsp;': ' ',
+    };
+    return text.replace(/&[a-zA-Z0-9#]+;/g, (entity) => entities[entity] || entity);
 }
 
-// Example routes for quiz functionality
+// Start quiz route
 router.get('/start', async function (req, res, next) {
-  const { name, startDate, type } = req.session;
-  console.log('Session Data:', req.session);
+    const { name, startDate, type } = req.session;
+    if (!name || !startDate || !type) {
+        return res.status(400).send('Session data is incomplete');
+    }
 
-  var difficulty = req.query.difficulty || 'easy';
-  var amount = req.query.amount || 10;
+    var difficulty = req.query.difficulty || 'easy';
+    var amount = req.query.amount || 10;
 
-  var apiUrl = `https://opentdb.com/api.php?amount=${amount}&category=11&difficulty=${difficulty}&type=multiple`;
+    var apiUrl = `https://opentdb.com/api.php?amount=${amount}&category=11&difficulty=${difficulty}&type=multiple`;
 
-  try {
-      const response = await axios.get(apiUrl);
-
-      const decodedQuestions = response.data.results.map((question) => {
-          return {
-              ...question,
-              question: decodeHtmlEntities(question.question),
-              correct_answer: decodeHtmlEntities(question.correct_answer),
-              incorrect_answers: question.incorrect_answers.map(decodeHtmlEntities),
-          };
-      });
-      req.session.correctAnswers = decodedQuestions.map((q) => q.correct_answer);
-
-      // Pass session data directly to EJS
-      res.render('quiz_start', { 
-          questions: decodedQuestions, 
-          name: name, 
-          startDate: startDate, 
-          type: type 
-      });
-  } catch (error) {
-      console.error('Error fetching quiz questions:', error);
-      res.status(500).send('An error occurred while fetching quiz questions.');
-  }
+    try {
+        const response = await axios.get(apiUrl);
+        const decodedQuestions = response.data.results.map((question) => {
+            return {
+                ...question,
+                question: decodeHtmlEntities(question.question),
+                correct_answer: decodeHtmlEntities(question.correct_answer),
+                incorrect_answers: question.incorrect_answers.map(decodeHtmlEntities),
+            };
+        });
+        req.session.correctAnswers = decodedQuestions.map((q) => q.correct_answer);
+        res.render('quiz_start', { questions: decodedQuestions, name, startDate, type, difficulty });
+    } catch (error) {
+        console.error('Error fetching quiz questions:', error);
+        res.status(500).send('An error occurred while fetching quiz questions.');
+    }
 });
 
-// POST route to handle quiz submission
+// Submit quiz answers and save score
 router.post('/submit', async (req, res) => {
-  const { name, startDate, type, answers } = req.body;  // Destructure answers from req.body
+    const { name, answers, difficulty } = req.body; 
 
-  if (!name || !answers) {
-      return res.status(400).json({ error: 'Name and answers are required' });
-  }
+    if (!name || !answers || !difficulty) {
+        return res.status(400).json({ error: 'Name, answers, and difficulty are required' });
+    }
 
-  try {
-      // Calculate the score based on answers
-      const correctAnswers = req.session.correctAnswers || [];
-      let calculatedScore = 0;
+    try {
+        const correctAnswers = req.session.correctAnswers || [];
+        let calculatedScore = 0;
 
-      Object.keys(answers).forEach((key) => {
-          if (answers[key] === correctAnswers[key]) {
-              calculatedScore++;
-          }
-      });
+        // Check if the number of answers matches the expected number
+        if (Object.keys(answers).length !== correctAnswers.length) {
+            return res.status(400).json({ error: 'Answers do not match the number of questions' });
+        }
 
-      // Create a new quiz record
-      const newQuizRecord = new QuizRecord({
-          name,
-          type,
-          score: calculatedScore, // Set the calculated score
-          date: new Date() // Set the current date as the quiz submission date
-      });
+        // Calculate the score based on the answers
+        Object.keys(answers).forEach((key) => {
+            if (answers[key] === correctAnswers[key]) {
+                calculatedScore++;
+            }
+        });
 
-      // Save the record to the database
-      await newQuizRecord.save();
+        // Find the user in the database and update the score and difficulty
+        const user = await User.findOne({ name });
+        if (!user) {
+            return res.status(400).json({ error: 'User not found' });
+        }
 
-      // Respond with the calculated score
-      res.json({ score: calculatedScore });
+        // Update the user's score and difficulty
+        user.score = calculatedScore;
+        user.difficulty = difficulty;  // Update difficulty to the new one selected by the user
+        await user.save();
 
-  } catch (error) {
-      console.error('Error saving quiz record:', error);
-      res.status(500).json({ error: 'An error occurred while saving the quiz record' });
-  }
+        // Send a JSON response with the redirect URL
+        res.json({ redirectUrl: '/quiz/records' });
+    } catch (error) {
+        console.error('Error updating quiz score:', error);
+        res.status(500).json({ error: 'An error occurred while updating the quiz score.' });
+    }
 });
 
-module.exports = router;
 
-// Endpoint to view quiz records
+// View user profile and quiz records
 router.get('/records', async function (req, res) {
-  try {
-    const { name, score, startDate, type } = req.query;
-    const records = await QuizRecord.find({ name: new RegExp(name, 'i') }).sort({ date: -1 });
-    res.render('quizRecords', { title: 'Quiz Records', records, name, score, startDate, type });
-  } catch (error) {
-    console.error('Error fetching quiz records:', error);
-    res.status(500).send('An error occurred while fetching quiz records.');
-  }
+    const { name, startDate, score, type, difficulty } = req.session;
+
+    if (!name) {
+        return res.status(400).send('User is not logged in');
+    }
+
+    try {
+        let filter = {};
+
+        // Apply filters only if query parameters are present
+        if (req.query.name && req.query.name.trim() !== '') {
+            filter.name = { $regex: req.query.name, $options: 'i' };
+        }
+
+        if (req.query.score && req.query.score.trim() !== '') {
+            filter.score = parseInt(req.query.score, 10);
+        }
+
+        if (req.query.type && req.query.type.trim() !== '') {
+            filter.type = req.query.type;
+        }
+
+        if (req.query.startDate && req.query.startDate.trim() !== '') {
+            const parsedStartDate = new Date(req.query.startDate);
+            parsedStartDate.setHours(0, 0, 0, 0);
+            filter.date = { $gte: parsedStartDate };
+        }
+
+        if (req.query.difficulty && req.query.difficulty.trim() !== '') {
+            filter.difficulty = req.query.difficulty;
+        }
+
+        // Fetch filtered records
+        const records = await User.find(filter);
+
+        res.render('quizRecords', {
+            title: 'Quiz Records',
+            records,
+            name,
+            score,
+            startDate,
+            type,
+            difficulty
+        });
+    } catch (error) {
+        console.error('Error retrieving records:', error);
+        res.status(500).send('An error occurred while retrieving records.');
+    }
 });
 
-// Export the router
+
+
 module.exports = router;

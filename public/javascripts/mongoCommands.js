@@ -1,69 +1,37 @@
 const mongoose = require('mongoose');
-const User = require('../../models/user'); // Adjust path if necessary
+const User = require('../../models/user');
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/myDatabase', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log('MongoDB connection error:', err));
+const uri = 'mongodb+srv://express_user:express123@cluster0.rixeg.mongodb.net/myDatabase?retryWrites=true&w=majority';
 
-// Function to drop email index
-async function dropEmailIndex() {
-  try {
-    // Check for the email index on the User model
-    const indexes = await User.collection.indexes();
-    const emailIndex = indexes.find(index => index.key.hasOwnProperty('email'));
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(async () => {
+        console.log('Connected to MongoDB');
 
-    if (emailIndex) {
-      console.log('Dropping existing email index...');
-      await User.collection.dropIndex('email_1');
-      console.log('Email index dropped successfully');
-    } else {
-      console.log('No email index found');
-    }
-  } catch (error) {
-    console.log('Error checking or dropping email index:', error);
-  }
-}
+        const db = mongoose.connection.db;
+        const collections = await db.listCollections().toArray();
 
-// Function to insert a test user
-async function insertTestUser() {
-  try {
-    // Ensure that the test user has a valid email (avoid duplicate key errors)
-    const testUser = new User({
-      name: 'Test User',
-      type: 'student',
-      score: 85,
-      email: 'testuser@example.com' // Add a valid email to avoid the duplicate key error
-    });
+        console.log(`Database: ${db.databaseName}`);
+        console.log('Collections:');
+        collections.forEach(collection => console.log(`- ${collection.name}`));
 
-    await testUser.save();
-    console.log('Test user inserted successfully');
-  } catch (err) {
-    console.log('Error inserting test user:', err);
-  }
-}
+        // Fetch all users (optional)
+        console.log('\nFetching data from the "users" collection:');
+        const users = await User.find({});  // This fetches all users
+        console.log(users);
 
-// Main function to execute the MongoDB operations
-async function main() {
-  // Drop the email index if it exists
-  await dropEmailIndex();
-  
-  // Insert the test user
-  await insertTestUser();
+        // Remove users with invalid "admin" type (if any)
+        console.log('\nRemoving users with invalid "admin" type...');
+        await User.deleteMany({ type: 'admin' });  // Remove records with 'admin' type
 
-  // Optionally, sync indexes (if necessary)
-  try {
-    await User.syncIndexes();
-    console.log('Indexes synced successfully');
-  } catch (err) {
-    console.log('Error syncing indexes:', err);
-  }
-}
+        // OR: Drop the entire users collection (this will remove all records)
+        // await db.collection('users').drop();
 
-// Run the main function
-main().then(() => {
-  mongoose.disconnect();
-}).catch(err => {
-  console.log('Error during the main execution:', err);
-  mongoose.disconnect();
-});
+        console.log('Removed users with invalid type "admin".');
+
+        // Optionally: Confirm after removal
+        const remainingUsers = await User.find({});
+        console.log('Remaining users:', remainingUsers);
+
+        mongoose.disconnect(); 
+    })
+    .catch(err => console.error('Error connecting to MongoDB:', err));

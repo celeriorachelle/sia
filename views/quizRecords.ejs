@@ -1,16 +1,31 @@
-<form action="/quizRecords" method="get">
-    <input type="text" name="name" placeholder="Search by Name" value="<%= name || '' %>">
-    <input type="date" name="startDate" placeholder="Start Date" value="<%= startDate || '' %>">
-    
-    <!-- Add a dropdown for selecting the type -->
-    <select name="type" id="type">
-        <option value="">Select Type</option>
-        <option value="student" <%= type === 'student' ? 'selected' : '' %>>Student</option>
-        <option value="teacher" <%= type === 'teacher' ? 'selected' : '' %>>Teacher</option>
-        <option value="admin" <%= type === 'admin' ? 'selected' : '' %>>Admin</option>
+<form id="filterForm" method="GET" action="/quiz/records">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" placeholder="Enter name" value="" />
+
+    <label for="score">Score:</label>
+    <input type="number" id="score" name="score" placeholder="Enter score" value="" />
+
+    <label for="type">Difficulty:</label>
+    <select id="difficulty" name="difficulty">
+        <option value="">All</option>
+        <option value="easy">easy</option>
+        <option value="medium">medium</option>
+        <option value="hard">hard</option>
     </select>
-    
-    <button type="submit">Search</button>
+
+    <label for="type">Type:</label>
+    <select id="type" name="type">
+        <option value="">All</option>
+        <option value="student">Student</option>
+        <option value="teacher">Teacher</option>
+        <option value="others">Others</option>
+    </select>
+
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate" name="startDate" value="" />
+
+    <button type="button" id="applyFilterBtn">Apply Filter</button>
+    <button type="button" id="clearFilterBtn">Clear Filter</button> 
 </form>
 
 <table>
@@ -19,17 +34,54 @@
             <th>Name</th>
             <th>Score</th>
             <th>Date</th>
-            <th>Type</th> <!-- Add Type column -->
+            <th>Type</th>
+            <th>Quiz Difficulty</th>
         </tr>
     </thead>
     <tbody>
-        <% records.forEach(record => { %>
-        <tr>
-            <td><%= record.name %></td>
-            <td><%= record.score %></td>
-            <td><%= new Date(record.date).toLocaleDateString() %></td>
-            <td><%= record.type %></td> <!-- Display Type -->
-        </tr>
-        <% }); %>
+        <% if (records.length > 0) { %>
+            <% records.forEach(record => { %>
+                <tr>
+                    <td><%= record.name %></td>
+                    <td><%= record.score %></td>
+                    <td><%= new Date(record.date).toLocaleDateString() %></td>
+                    <td><%= record.type %></td>
+                    <td><%= record.difficulty %></td>
+                </tr>
+            <% }); %>
+        <% } else { %>
+            <tr><td colspan="5">No records found</td></tr>
+        <% } %>
     </tbody>
 </table>
+
+<script>
+    document.getElementById("applyFilterBtn").addEventListener("click", function(event) {
+        const filterForm = document.getElementById("filterForm");
+
+        // Only submit the form if the user has entered any filter values
+        const name = document.getElementById("name").value.trim();
+        const score = document.getElementById("score").value.trim();
+        const type = document.getElementById("type").value;
+        const startDate = document.getElementById("startDate").value.trim();
+
+        // If no filters are selected, do not submit
+        if (!name && !score && !type && !startDate && !document.getElementById("difficulty").value) {
+            alert("Please enter at least one filter to apply.");
+            return; // Do not submit the form if no filter is selected
+        }
+
+        // Submit the form if filters are selected
+        filterForm.submit();
+    });
+
+    document.getElementById("clearFilterBtn").addEventListener("click", function(event) {
+        // Reset the filter form fields to their default values (empty)
+        const filterForm = document.getElementById("filterForm");
+        filterForm.reset();
+
+        // Optionally, reload the page with no filters
+        window.location.href = "/quiz/records"; // This will clear the query parameters and reload the page
+    });
+</script>
+

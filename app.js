@@ -6,6 +6,7 @@ const createError = require('http-errors');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const app = express();
+const MongoStore = require('connect-mongo');
 
 const indexRouter = require('./routes/index');
 const quizRouter = require('./routes/quiz');
@@ -24,10 +25,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(session({
-    secret: 'your-secret-key',
-    resave: false,
-    saveUninitialized: true,
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true,
+  store: MongoStore.create({ mongoUrl: 'mongodb+srv://express_user:express123@cluster0.rixeg.mongodb.net/myDatabase?retryWrites=true&w=majority&appName=Cluster0' }), // Replace with your session DB URL
+  cookie: { secure: false } // set to true if using HTTPS
 }));
 
 // Example middleware for testing
