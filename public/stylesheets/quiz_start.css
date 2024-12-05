@@ -46,14 +46,15 @@ body {
     text-decoration: none;
     letter-spacing: 2px;
     color: white;
-    padding: 10px;
+    border-radius: 5px;
+    padding: 5px;
     transition: background-color 0.5s ease-out 100ms
     
 }
 
 .navContainer ul li a:hover {
-    background-color: white;
-    color: #d32f2f;
+    background-color: #ffffffa9;
+    color: #e50914;
     border-radius: 5px;
 }
 
@@ -144,4 +145,3 @@ input[type="radio"]:checked + label {
 #correctAns, #hideBtn {
     display: none;
 }
-

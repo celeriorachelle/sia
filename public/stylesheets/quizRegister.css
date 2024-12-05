@@ -1,45 +1,128 @@
 body {
-    font-family: 'Bebas Neue', sans-serif;
-    background-color: #ffff;
-    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.229),rgba(0, 0, 0, 0.241)), url('/images/register.jpg');
+    background-size: cover;
     background-attachment: fixed;
     background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
+    font-family: 'Bebas Neue', sans-serif;
     }
     
-    
-    .header {
-        display: flex;
-    }
-    
-    .header ul {
-        display:flex;
-        list-style-type: none;
-        margin-top: 20px;
-    }
-    
-    .header ul li{
-        margin-left: 30px;
-    }
-    .header ul li a {
-        text-decoration: none;
-        letter-spacing: 2px;
-        color: white;
-        padding: 10px;
-        transition: background-color 0.5s ease-out 100ms
-        
-    }
-    
-    .header ul li a:hover {
-        background-color: white;
-        color: #d32f2f;
-        border-radius: 5px;
+    .navContainer {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 10px 30px;
+    margin-top: 10px;
     }
     
     .logo {
-        width: 100px;
-        height: 25px;
-        margin-left: 10px;
-        margin-right: 865px;
-        margin-top: 20px;
+    width: 100px;
+    height: auto;
+    padding: 10px;
+    margin-left: 30px;
+    margin-right: auto;
+    }
+    
+  
+    .navContainer ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 30px;
+    margin-right: 20px;
+    }
+    
+    .navContainer ul li a {
+    text-decoration: none;
+    letter-spacing: 2px;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    transition: background-color 0.5s ease-out 100ms;
+    }
+    
+    .navContainer ul li a:hover {
+    background-color: #ffffffa9;
+    color: #e50914;
+    border-radius: 5px;
+    }
+    
+    .formContainer {
+        width: 100%;
+        max-width: 400px;
+        background-color: transparent;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.7);
+        text-align: center;
+        margin: 0 auto;
+    }
+    
+    form#quizForm {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    form#quizForm input,
+    form#quizForm select {
+        padding: 10px;
+        font-size: 14px;
+        font-weight: bold;
+        font-family: 'Sharp Sans', sans-serif;
+        border-radius: 5px;
+        background-color: transparent;
+        border: 2px solid #ffffff;
+        color: #ffffff;
+        transition: border-color 0.3s ease, background-color 0.3s ease;
+    }
+    
+    form#quizForm input:focus,
+    form#quizForm select:focus {
+        outline: none;
+        border-color: rgb(142, 142, 142); /* Highlight border on focus */
+        background-color: rgba(255, 255, 255, 0.1); /* Subtle background change */
+    }
+    
+    .formContainer label {
+        color: #ffffff;
+        letter-spacing: 2px;
+        font-size: 15px;
+        margin-bottom: 5px;
+        display: block; /* Ensure labels are on their own lines */
+    }
+    
+    form#quizForm button {
+        background-color: rgba(26, 26, 26, 0.8);
+        box-shadow: 0 8px 8px rgba(0, 0, 0, 0.569);
+        color: #ffffff;
+        border: 2px solid #ffffff;
+        padding: 10px;
+        font-size: 20px;
+        font-family: 'Bebas Neue', sans-serif;
+        letter-spacing: 2px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out; /* Smooth hover effect */
+    }
+    
+    form#quizForm button:hover {
+        background-color: #88060db3;
+        box-shadow: 0px 5px 8px rgba(229, 9, 20, 0.7); /* Add glow on hover */
+        transform: translateY(-2px); /* Subtle upward movement */
+        color: #ffffff;
+    }
+    
+    form#quizForm button:active {
+        background-color: #b00710;
+        transform: translateY(0); /* Reset movement on click */
+        box-shadow: none;
     }

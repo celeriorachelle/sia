@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Bebas Neue', sans-serif;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.41),rgba(0, 0, 0, 0.312)),url('/images/quiz.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.229),rgba(0, 0, 0, 0.241)),url('/images/moana.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -26,9 +26,10 @@ body {
 .logo {
     width: 100px;
     height: auto;
-    margin-left: 10px;
-    margin-right: 880px;
+    margin-left: 30px;
+    margin-right: 780px;
 }
+
 
 .navContainer ul {
     list-style-type: none;
@@ -47,13 +48,14 @@ body {
     text-decoration: none;
     letter-spacing: 2px;
     color: white;
-    padding: 10px;
+    padding: 5px;
+    border-radius: 5px;
     transition: background-color 0.5s ease-out 100ms
 }
 
 .navContainer ul li a:hover {
-    background-color: white;
-    color: #b81515;
+    background-color: #ffffffa9;
+    color: #e50914;
     border-radius: 5px;
 }
 
@@ -68,7 +70,8 @@ body {
 .difficulty label {
     margin-bottom: 20px;
     color: white;
-    letter-spacing: 2px;
+    font-size: 15px;
+    letter-spacing: 4px;
     font-family: 'Bebas Neue', sans-serif;
 }
 
@@ -84,30 +87,32 @@ body {
 }
 
 .buttonList button {
-    background-color: #d32f2f;
+    background-color: #1a1a1aba;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.569);
+    border-color: #fff;
+    border-width: 2px;
     color: white;
     padding: 10px 30px;
     font-family: 'Bebas Neue', sans-serif;
     font-size: 20px;
     letter-spacing: 2px;
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
     width: 200px;
-    border: none;
     transition: background-color 0.5s ease-out 100ms
  
     
 }
 
 .buttonList button:hover {
-    background-color: #ac1414;
+    background-color: #108103d9;
     color: white;
-    border-radius: 5px;
+    border-radius: 10px;
 
 }
 
 .buttonList button:focus {
-    background-color: #580909;
+    background-color: #030b81cd;
 }
 
 input[type="number"] {
@@ -120,22 +125,24 @@ input[type="number"] {
 
 /* Start quiz button */
 #submitButton {
-    background-color: #d32f2f;
+    border-color: aliceblue;
+    background-color: #1a1a1aba;
+    border-width: 2px;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.569);
     color: white;
     padding: 10px 40px;
     font-size: 20px;
-    border: none;
     letter-spacing: 2px;
     cursor: pointer;
     margin-top: 40px;
     display: block;
     align-self: center;
-    border-radius: 5px;
+    border-radius: 10px;
     transition: all .2s ease-in-out;
     font-family: 'Bebas Neue', sans-serif;
 }
 
 #submitButton:hover {
-    background-color: #b71c1c;
+    background-color: #108103d9;
     transform: scale(1.25);
 }
