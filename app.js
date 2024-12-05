@@ -10,7 +10,7 @@ const MongoStore = require('connect-mongo');
 
 const indexRouter = require('./routes/index');
 const quizRouter = require('./routes/quiz');
-const aboutusRouter = require('./routes/aboutUs');
+const aboutUsRouter = require('./routes/aboutUs');
 const trendingRouter = require('./routes/Trendings');
 const quizRecordsRouter = require('./routes/quizRecords');
 const quizRegisterRouter = require('./routes/quizRegister');
@@ -50,7 +50,7 @@ mongoose.connect('mongodb+srv://express_user:express123@cluster0.rixeg.mongodb.n
 // Test route
 app.use('/', indexRouter);
 app.use('/quiz', quizRouter);
-app.use('/aboutUs', aboutusRouter);
+app.use('/aboutUs', aboutUsRouter);
 app.use('/Trendings', trendingRouter);
 app.use('/quizRecords', quizRecordsRouter);
 app.use('/quizRegister', quizRegisterRouter);

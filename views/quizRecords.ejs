@@ -1,60 +1,90 @@
-<form id="filterForm" method="GET" action="/quiz/records">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" placeholder="Enter name" value="" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trending Movies</title>
+    <link rel="stylesheet" href="/stylesheets/quizRecords.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="navContainer">
+        <img src="images/logo.png" class="logo">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/aboutUs"</a>About Us</li>
+            <li><a href="/quizRegister">Register</a></li>
+            <li><a href="/quiz/records">Records</a></li>
+            <li><a href="/Trendings">Trendings</a></li>
+        </ul>
+    </div>
 
-    <label for="score">Score:</label>
-    <input type="number" id="score" name="score" placeholder="Enter score" value="" />
-
-    <label for="type">Difficulty:</label>
-    <select id="difficulty" name="difficulty">
-        <option value="">All</option>
-        <option value="easy">easy</option>
-        <option value="medium">medium</option>
-        <option value="hard">hard</option>
-    </select>
-
-    <label for="type">Type:</label>
-    <select id="type" name="type">
-        <option value="">All</option>
-        <option value="student">Student</option>
-        <option value="teacher">Teacher</option>
-        <option value="others">Others</option>
-    </select>
-
-    <label for="startDate">Start Date:</label>
-    <input type="date" id="startDate" name="startDate" value="" />
-
-    <button type="button" id="applyFilterBtn">Apply Filter</button>
-    <button type="button" id="clearFilterBtn">Clear Filter</button> 
-</form>
-
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Score</th>
-            <th>Date</th>
-            <th>Type</th>
-            <th>Quiz Difficulty</th>
-        </tr>
-    </thead>
-    <tbody>
-        <% if (records.length > 0) { %>
-            <% records.forEach(record => { %>
-                <tr>
-                    <td><%= record.name %></td>
-                    <td><%= record.score %></td>
-                    <td><%= new Date(record.date).toLocaleDateString() %></td>
-                    <td><%= record.type %></td>
-                    <td><%= record.difficulty %></td>
-                </tr>
-            <% }); %>
-        <% } else { %>
-            <tr><td colspan="5">No records found</td></tr>
-        <% } %>
-    </tbody>
-</table>
-
+<body>
+    <form id="filterForm" method="GET" action="/quiz/records">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter name" value="" />
+    
+        <label for="score">Score:</label>
+        <input type="number" id="score" name="score" placeholder="Enter score" value="" />
+    
+        <label for="type">Difficulty:</label>
+        <select id="difficulty" name="difficulty">
+            <option value="">All</option>
+            <option value="easy">easy</option>
+            <option value="medium">medium</option>
+            <option value="hard">hard</option>
+        </select>
+    
+        <label for="type">Type:</label>
+        <select id="type" name="type">
+            <option value="">All</option>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+            <option value="others">Others</option>
+        </select>
+    
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" value="" />
+    
+        <label for="sortOrder">Sort Order:</label>
+        <select id="sortOrder" name="sortOrder">
+            <option value="asc" <%= sortOrder === 'asc' ? 'selected' : '' %>>Lowest to Highest</option>
+            <option value="desc" <%= sortOrder === 'desc' ? 'selected' : '' %>>Highest to Lowest</option>
+        </select>
+    
+        <button type="button" id="applyFilterBtn">Apply Filter</button>
+        <button type="button" id="clearFilterBtn">Clear Filter</button> 
+    
+        <label>Your Score: <%= score %></label>
+    </form>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Score</th>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Quiz Difficulty</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (records.length > 0) { %>
+                <% records.forEach(record => { %>
+                    <tr>
+                        <td><%= record.name %></td>
+                        <td><%= record.score %></td>
+                        <td><%= new Date(record.date).toLocaleDateString() %></td>
+                        <td><%= record.type %></td>
+                        <td><%= record.difficulty %></td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr><td colspan="5">No records found</td></tr>
+            <% } %>
+        </tbody>
+    </table>
+</body>
 <script>
     document.getElementById("applyFilterBtn").addEventListener("click", function(event) {
         const filterForm = document.getElementById("filterForm");
@@ -64,9 +94,10 @@
         const score = document.getElementById("score").value.trim();
         const type = document.getElementById("type").value;
         const startDate = document.getElementById("startDate").value.trim();
+        const sortOrder = document.getElementById("sortOrder").value;
 
         // If no filters are selected, do not submit
-        if (!name && !score && !type && !startDate && !document.getElementById("difficulty").value) {
+        if (!name && !score && !type && !startDate && !document.getElementById("difficulty").value && !sortOrder) {
             alert("Please enter at least one filter to apply.");
             return; // Do not submit the form if no filter is selected
         }
@@ -84,4 +115,5 @@
         window.location.href = "/quiz/records"; // This will clear the query parameters and reload the page
     });
 </script>
+<html>
 

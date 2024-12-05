@@ -1,6 +1,6 @@
 body {
     font-family: 'Bebas Neue', sans-serif;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.41),rgba(0, 0, 0, 0.312)),url('/images/minions.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.229),rgba(0, 0, 0, 0.241)),url('/images/sonic1.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -26,22 +26,22 @@ body {
         text-decoration: none;
         letter-spacing: 2px;
         color: white;
-        padding: 10px;
+        padding: 5px;
         transition: background-color 0.5s ease-out 100ms
         
     }
     
     .header ul li a:hover {
-        background-color: white;
-        color: #d32f2f;
+        background-color: #0000005c;
+        color: #e50914;
         border-radius: 5px;
     }
     
     .logo {
         width: 100px;
         height: 25px;
-        margin-left: 10px;
-        margin-right: 865px;
+        margin-left: 20px;
+        margin-right: 780px;
         margin-top: 20px;
     }
     
@@ -51,12 +51,12 @@ body {
         font-weight: 500;
     }
     .about-us {
-        background-color: rgba(81, 85, 20, 0.368);  
+        background-color: rgba(23, 23, 23, 0.624);
         margin: 20px auto;
         max-width: 800px;
         padding: 20px;
         border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.872);
         color:white;
         font-family: 'Sharp Sans', sans-serif;
 
@@ -86,19 +86,21 @@ body {
         width: 100px;
         height: 90px;
         padding: 2px;
-        background-color: rgba(255, 255, 255, 0.94);
-        border-radius: 5%;
+        box-shadow: rgba(255, 255, 255, 0.743);
+        border-color: #ffff;
+        border-width: 2px;
+        border-radius: 20%;
         margin-bottom: 15px;
     }
     .profile-box {
-        background-color: rgba(81, 85, 20, 0.368);  
+        background-color: rgba(23, 23, 23, 0.624);
         width: 200px;
         height: 200px; 
         margin: 10px; 
-        padding: 20px;
+        padding: 10px;
         text-align: center;
         border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.872);
         transition: all 0.5s ease;
         color: white;
         overflow: hidden;
@@ -116,7 +118,6 @@ body {
         padding: 5px;
         box-sizing: border-box;
     }
-
 
     .profile-box:hover {
         width: 400px;

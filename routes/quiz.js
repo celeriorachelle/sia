@@ -81,6 +81,8 @@ router.post('/submit', async (req, res) => {
         user.difficulty = difficulty;  // Update difficulty to the new one selected by the user
         await user.save();
 
+        req.session.score = calculatedScore;      
+
         // Send a JSON response with the redirect URL
         res.json({ redirectUrl: '/quiz/records' });
     } catch (error) {
@@ -124,8 +126,12 @@ router.get('/records', async function (req, res) {
             filter.difficulty = req.query.difficulty;
         }
 
-        // Fetch filtered records
-        const records = await User.find(filter);
+        let sortOrder = 1;  // Default is ascending order
+        if (req.query.sortOrder && req.query.sortOrder.toLowerCase() === 'desc') {
+            sortOrder = -1;  // Descending order
+        }
+
+        const records = await User.find(filter).sort({ score: sortOrder });
 
         res.render('quizRecords', {
             title: 'Quiz Records',
@@ -134,7 +140,8 @@ router.get('/records', async function (req, res) {
             score,
             startDate,
             type,
-            difficulty
+            difficulty,
+            sortOrder: req.query.sortOrder,
         });
     } catch (error) {
         console.error('Error retrieving records:', error);

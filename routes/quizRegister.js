@@ -4,7 +4,7 @@ const User = require('../models/user');
 
 // GET route to render the registration form
 router.get('/', (req, res) => {
-    res.render('quizregister', { title: 'Register', startDate: '' });
+    res.render('quizRegister', { title: 'Register', startDate: '' });
 });
 
 // POST route to handle form submission and redirect to quiz lobby

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('../../models/user');
+const readline = require('readline');
 
 const uri = 'mongodb+srv://express_user:express123@cluster0.rixeg.mongodb.net/myDatabase?retryWrites=true&w=majority';
 
@@ -7,31 +8,43 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(async () => {
         console.log('Connected to MongoDB');
 
-        const db = mongoose.connection.db;
-        const collections = await db.listCollections().toArray();
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
 
-        console.log(`Database: ${db.databaseName}`);
-        console.log('Collections:');
-        collections.forEach(collection => console.log(`- ${collection.name}`));
+        rl.question('Delete all records? (Y/N): ', async (answer) => {  // Make this callback async
+            if (answer.toUpperCase() === 'Y') {
+                rl.question('Are you sure? (Y/N): ', async (answer) => {  // Make this callback async
+                    if (answer.toUpperCase() === 'Y') {
+                        try {
+                            const db = mongoose.connection.db;
+                            const collections = await db.listCollections().toArray();
 
-        // Fetch all users (optional)
-        console.log('\nFetching data from the "users" collection:');
-        const users = await User.find({});  // This fetches all users
-        console.log(users);
+                            console.log(`Database: ${db.databaseName}`);
+                            console.log('Collections:');
+                            collections.forEach(collection => console.log(`- ${collection.name}`));
 
-        // Remove users with invalid "admin" type (if any)
-        console.log('\nRemoving users with invalid "admin" type...');
-        await User.deleteMany({ type: 'admin' });  // Remove records with 'admin' type
+                            console.log();
 
-        // OR: Drop the entire users collection (this will remove all records)
-        // await db.collection('users').drop();
+                            await db.collection('users').drop();
 
-        console.log('Removed users with invalid type "admin".');
+                            console.log('All records from the "users" collection have been cleared.');
 
-        // Optionally: Confirm after removal
-        const remainingUsers = await User.find({});
-        console.log('Remaining users:', remainingUsers);
+                            // Optionally: Confirm after dropping
+                            const remainingUsers = await User.find({});
+                            console.log('Remaining users:', remainingUsers);  // This should be an empty array
 
-        mongoose.disconnect(); 
+                        } catch (error) {
+                            console.error('Error clearing the "users" collection:', error);
+                        }
+                    }
+                    rl.close();  // Close the readline interface after user input is done
+                });
+            } else {
+                console.log('Operation cancelled.');
+                rl.close();  // Close the readline interface if the user cancels
+            }
+        });
     })
     .catch(err => console.error('Error connecting to MongoDB:', err));
