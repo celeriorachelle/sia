@@ -22,7 +22,7 @@
         <form id="quizForm" action="/quizRegister" method="POST">
             <!-- Registration fields -->
             <input type="text" name="name" id="name" placeholder="Your Name" required />
-            <input type="date" name="startDate" placeholder="Start Date" value="<%= startDate || '' %>">
+            <input type="date" name="startDate" placeholder="Start Date" required>
             <label for="type">Select Type:</label>
             <select name="type" id="type">
                 <option value="student" selected>Student</option>
