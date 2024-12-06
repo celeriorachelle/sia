@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.229),rgba(0, 0, 0, 0.241)), url('/images/register.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.286),rgba(0, 0, 0, 0.235)), url('/images/register.jpg');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -80,7 +80,7 @@ body {
         font-family: 'Sharp Sans', sans-serif;
         border-radius: 5px;
         background-color: transparent;
-        border: 2px solid #ffffff;
+        border: 1px solid #ffffff;
         color: #ffffff;
         transition: border-color 0.3s ease, background-color 0.3s ease;
     }
@@ -90,6 +90,11 @@ body {
         outline: none;
         border-color: rgb(142, 142, 142); /* Highlight border on focus */
         background-color: rgba(255, 255, 255, 0.1); /* Subtle background change */
+    }
+
+    select option {
+    color: #ffffff; /* Font color for dropdown options */
+    background-color: #000000d4; /* Background color for dropdown options */
     }
     
     .formContainer label {
@@ -104,7 +109,7 @@ body {
         background-color: rgba(26, 26, 26, 0.8);
         box-shadow: 0 8px 8px rgba(0, 0, 0, 0.569);
         color: #ffffff;
-        border: 2px solid #ffffff;
+        border: 1px solid #ffffff;
         padding: 10px;
         font-size: 20px;
         font-family: 'Bebas Neue', sans-serif;

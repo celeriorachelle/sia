@@ -2,7 +2,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Bebas Neue', sans-serif;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.229),rgba(0, 0, 0, 0.241)),url('/images/moana.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.286),rgba(0, 0, 0, 0.235)),url('/images/moana.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;

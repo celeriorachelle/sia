@@ -3,6 +3,7 @@
 <head>
     <title>Quiz Start</title>
     <link rel="stylesheet" href="/stylesheets/quiz_start.css">
+    <link href="https://fonts.cdnfonts.com/css/sharp-sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -13,7 +14,7 @@
             <li><a href="/aboutus">About us</a></li>
             <li><a href="/quiz/records">Records</a></li>
             <li><a href="/quizRegister">Register</a></li>
-            <li><a href="/Trendings">Trending</a></li>
+            <li><a href="/Trendings">Trendings</a></li>
         </ul>
     </div>
 
@@ -22,8 +23,9 @@
 
     <h1>Quiz Questions</h1>
 
-    <!-- Display the selected difficulty -->
-    <p id="difficultyLabel">Difficulty: <%= difficulty.charAt(0).toUpperCase() + difficulty.slice(1) %></p>
+    <div class="diff">
+        <p id="difficultyLabel">Difficulty: <%= difficulty.charAt(0).toUpperCase() + difficulty.slice(1) %></p>
+    </div>
 
     <div id="quizForm">
         <% if (questions && questions.length > 0) { %>
@@ -38,7 +40,7 @@
                     %>
                         <div class="choice">
                             <input type="radio" id="answer<%= i %><%= j %>" name="answers[<%= i %>]" value="<%= answers[j] %>">
-                            <label for="answer<%= i %><%= j %>"><%= answers[j] %></label>
+                            <label id="questionP" for="answer<%= i %><%= j %>"><%= answers[j] %></label>
                         </div>
                     <% } %>
                 </div>                

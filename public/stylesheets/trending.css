@@ -1,5 +1,5 @@
 body {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.229),rgba(0, 0, 0, 0.241)),url('/images/okok.jpg'); 
+    background-image: linear-gradient(rgba(0, 0, 0, 0.286),rgba(0, 0, 0, 0.235)),url('/images/cars.jpg'); 
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -26,7 +26,7 @@ body {
     width: 100px;
     height: auto;
     margin-left: 5px;
-    margin-right: 800px;
+    margin-right: 700px;
 }
 
 .navContainer ul {
@@ -52,7 +52,7 @@ body {
 }
 
 .navContainer ul li a:hover {
-    background-color: #0000005c;
+    background-color: #ffffffa9;
     color: #e50914;
     border-radius: 5px;
 }
@@ -71,7 +71,7 @@ h1 {
     
 }
 .movie {
-    background-color: rgba(24, 22, 22, 0.663);
+    background-color: rgba(0, 0, 0, 0.629);
     border-radius: 8px;
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.73);
     margin: 10px;

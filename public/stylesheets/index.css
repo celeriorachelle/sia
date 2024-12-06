@@ -41,13 +41,14 @@ body {
 }
 
 .logo{
-  height: auto;
+  height: 25px;
   width: 100px;
   padding-top: 30px;
   padding-left: 50px;
   cursor: pointer;
-  margin-right: 230px;
+  margin-right: 280px;
 }
+
 .header-box {
   display: flex;
   justify-content: center;
@@ -137,7 +138,7 @@ footer {
 }
 
 li {
-  margin-right: 35px;
+  margin-right: 25px;
 
 
 }

@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Bebas Neue', sans-serif;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.41),rgba(0, 0, 0, 0.312)),url('/images/insideout.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.286),rgba(0, 0, 0, 0.235)),url('/images/toystory.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -65,25 +65,44 @@ h1, h2 {
     letter-spacing: 5px;
 
 }
+
+h1 {
+    margin-left: 55px;
+}
+
 h2 {
    left: -175px;
    position: relative;
 }
+
+#difficultyLabel {
+    margin-left: 630px;
+    color: white;
+    justify-self: center;
+    letter-spacing: 2px;
+    font-size: 20px;
+}
+
+#quizForm {
+    margin-left: 370px;
+}
+
 .questionContainer {
     width: 600px;
     margin: 20px;
-    padding: 20px;
+    padding: 25px;
     color: white;
-    background-color: rgba(17, 17, 17, 0.486);
+    background-color: rgba(0, 0, 0, 0.305);
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.816);
     display: flex;
     flex-direction: column;
 }
 
 .questionContainer p {
-    font-size:18px;
+    font-size: 20px;
     margin-bottom: 10px;
+    letter-spacing: 2px;
 }
 
 
@@ -92,15 +111,22 @@ input[type="radio"] {
     display: none;
 }
 
+#questionP {
+    font-family: 'Sharp sans', sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
 input[type="radio"]:checked + label {
-    background-color: #c51e1ecb; 
+    background-color: #1e2cc58d; 
     color: white; 
     transform: scale(1.15); 
     transition: all 0.2s ease-in-out; 
 }
 
 .questionContainer label {
-    padding: 10px;
+    padding: 5px;
     font-size: 18px;
     border-radius: 5px;
     cursor: pointer;
@@ -113,7 +139,7 @@ input[type="radio"]:checked + label {
     background-color: #ae1717; 
     transform: scale(1.1); 
     color: white;
-    font-weight: bold;
+  
 }
 
 .buttonSubmit button {
@@ -129,11 +155,10 @@ input[type="radio"]:checked + label {
     transition: all .2s ease-in-out;
     letter-spacing: 2px;
     font-family: 'Bebas Neue', sans-serif;
-
 }
 
 .buttonSubmit {
-    margin-left: 245px
+    margin-left: 615px
 }
 
 #btnSubmit:hover {

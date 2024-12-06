@@ -1,6 +1,6 @@
 body {
     font-family: 'Bebas Neue', sans-serif;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.229),rgba(0, 0, 0, 0.241)),url('/images/sonic1.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.152),rgba(0, 0, 0, 0.169)),url('/images/sonic1.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -41,7 +41,7 @@ body {
         width: 100px;
         height: 25px;
         margin-left: 20px;
-        margin-right: 780px;
+        margin-right: 750px;
         margin-top: 20px;
     }
     
