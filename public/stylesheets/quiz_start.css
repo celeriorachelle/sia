@@ -67,7 +67,7 @@ h1, h2 {
 }
 
 h1 {
-    margin-left: 55px;
+    margin-left: 15px;
 }
 
 h2 {
@@ -76,7 +76,7 @@ h2 {
 }
 
 #difficultyLabel {
-    margin-left: 630px;
+    margin-left: 600x;
     color: white;
     justify-self: center;
     letter-spacing: 2px;
